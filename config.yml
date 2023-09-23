@@ -1,0 +1,17 @@
+---
+static:
+  - group: Chicago
+    interval: 15s
+    servers:
+      - address: 74.91.119.9:7777
+        timeout: 250ms
+
+      - address: 192.223.26.77:7777
+        timeout: 250ms
+
+      - address: 104.238.165.51:7777
+        timeout: 250ms
+
+dynamic:
+  tokens:
+    - asldkgjasdflkjglkajsdflkjaglakjsf
