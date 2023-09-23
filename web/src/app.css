@@ -1,0 +1,60 @@
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:root {
+  --color-primary-750: hsl(210 7% 18%);
+  --color-primary-700: hsl(212 8% 21%);
+  --color-primary-650: hsl(212 9% 24%);
+  --color-primary-600: hsl(212 7% 33%);
+  --color-primary-400: hsl(212 8% 52%);
+  --color-primary-300: hsl(212 8% 60%);
+  --color-primary-200: hsl(212 8% 80%);
+  --color-primary-100: hsl(212 10% 95%);
+
+  --color-error-700: hsl(0 26% 20%);
+  --color-error-600: hsl(0 35% 32%);
+
+  --color-update-650: hsl(212 18% 24%);
+  --color-update-600: hsl(212 18% 33%);
+
+  --font-primary: 'IBM Plex Sans', Arial, sans-serif;
+  --font-secondary: 'IBM Plex Sans Condensed', Arial, sans-serif;
+}
+
+body {
+  font: 16px var(--font-primary);
+  background: var(--color-primary-750);
+}
