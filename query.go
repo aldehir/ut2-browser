@@ -119,6 +119,9 @@ func (m *QueryEngine) performQuery(r Registration, state ServerState) {
 		return
 	}
 
+	// Save resolved address
+	resolvedAddr := addr.String()
+
 	// Use query port
 	addr.Port += 1
 
@@ -146,8 +149,9 @@ func (m *QueryEngine) performQuery(r Registration, state ServerState) {
 	}
 
 	m.State.Update(r.ID, ServerStateUpdate{
-		Online:  !offline,
-		Details: &details,
+		ResolvedAddress: resolvedAddr,
+		Online:          !offline,
+		Details:         &details,
 	})
 }
 

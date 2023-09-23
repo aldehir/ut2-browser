@@ -18,10 +18,11 @@ type State struct {
 }
 
 type ServerState struct {
-	Registration Registration
-	Online       bool
-	Failures     int
-	Details      *query.ServerDetails
+	Registration    Registration
+	ResolvedAddress string
+	Online          bool
+	Failures        int
+	Details         *query.ServerDetails
 
 	Created time.Time
 	Updated time.Time
@@ -40,8 +41,9 @@ func (s ServerState) Filled() float64 {
 }
 
 type ServerStateUpdate struct {
-	Online  bool
-	Details *query.ServerDetails
+	ResolvedAddress string
+	Online          bool
+	Details         *query.ServerDetails
 }
 
 var ErrInvalidID = errors.New("invalid id")
@@ -105,6 +107,7 @@ func (s *State) Update(id int, update ServerStateUpdate) error {
 		return fmt.Errorf("%w: %d", ErrInvalidID, id)
 	}
 
+	state.ResolvedAddress = update.ResolvedAddress
 	state.Online = update.Online
 	state.Details = update.Details
 	state.Updated = time.Now()

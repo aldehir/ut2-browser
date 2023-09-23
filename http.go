@@ -25,13 +25,14 @@ type groupJSON struct {
 }
 
 type serverJSON struct {
-	Name         string          `json:"name"`
-	Address      string          `json:"address"`
-	ExternalLink string          `json:"external_link"`
-	Online       bool            `json:"online"`
-	Map          string          `json:"map"`
-	PlayerCount  playerCountJSON `json:"player_count"`
-	Players      []playerJSON    `json:"players"`
+	Name            string          `json:"name"`
+	Address         string          `json:"address"`
+	ResolvedAddress string          `json:"resolved_address"`
+	ExternalLink    string          `json:"external_link"`
+	Online          bool            `json:"online"`
+	Map             string          `json:"map"`
+	PlayerCount     playerCountJSON `json:"player_count"`
+	Players         []playerJSON    `json:"players"`
 }
 
 type playerCountJSON struct {
@@ -88,6 +89,7 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 			// Fallback values
 			jsonObj.Name = svr.Registration.Address
 			jsonObj.Address = svr.Registration.Address
+			jsonObj.ResolvedAddress = svr.ResolvedAddress
 			jsonObj.ExternalLink = svr.Registration.ExternalLink
 			jsonObj.Online = svr.Online
 
@@ -134,7 +136,7 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 
 	doc.Groups = groups
 
-	w.Header().Add("Content-Type", "text/json")
+	w.Header().Add("Content-Type", "application/json")
 
 	encoder := json.NewEncoder(w)
 	err := encoder.Encode(doc)

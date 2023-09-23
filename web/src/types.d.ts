@@ -10,6 +10,7 @@ export interface Group {
 export interface Server {
   name: string
   address: string
+  resolved_address?: string
   external_link?: string
   online: boolean
   map: string

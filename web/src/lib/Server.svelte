@@ -14,6 +14,13 @@
     return s
   }
 
+  function pickAddress(addr: string, resolved?: string) {
+    if (resolved != null && resolved.length > 0) {
+      return resolved
+    }
+    return addr
+  }
+
   function calcGridRows(players?: Player[]) {
     if (players == null) {
       return 1
@@ -28,6 +35,9 @@
 
   let serverNameShort: string
   $: serverNameShort = truncateName(server.name, 30)
+
+  let serverAddress: string
+  $: serverAddress = pickAddress(server.address, server.resolved_address)
 
   let isEmpty: boolean
   $: isEmpty = server.players == null || server.players.length == 0
@@ -76,11 +86,11 @@
   {/if}
   <div class="footer">
     <div class="address">
-      {server.address}
+      {serverAddress}
     </div>
     <div class="links">
-      <a href="ut2004://{server.address}" title="Join"><img src="{play}" alt="Join"></a>
-      <a href="ut2004://{server.address}?SpectatorOnly=1" title="Spectate"><img src="{eye}" alt="Spectate"></a>
+      <a href="ut2004://{serverAddress}" title="Join"><img src="{play}" alt="Join"></a>
+      <a href="ut2004://{serverAddress}?SpectatorOnly=1" title="Spectate"><img src="{eye}" alt="Spectate"></a>
       {#if server.external_link}
         <a target="_blank" href="{server.external_link}" title="External Link"><img src="{external_link}" alt="Admin"></a>
       {/if}
