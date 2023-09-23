@@ -30,65 +30,125 @@ static:
         link: https://chi-2.kokuei.dev/instance/3
         timeout: 250ms
 
+      - address: 45.63.76.237:7777
+        timeout: 250ms
+
+      - address: 45.63.76.237:7711
+        timeout: 250ms
+
+      - address: 45.63.76.237:7744
+        timeout: 250ms
+
+  - group: Atlanta
+    interval: 15s
+    servers:
+      - address: 64.94.238.47:7777
+        timeout: 250ms
+
+  - group: Los Angeles
+    interval: 15s
+    servers:
+      - address: 66.150.188.26:7777
+        timeout: 250ms
+
+  - group: South Carolina
+    interval: 15s
+    servers:
+      - address: 34.74.75.130:11200
+        timeout: 250ms
+
   - group: Dallas
     interval: 15s
     servers:
+      - address: 74.201.57.94:7777
+        timeout: 250ms
+
       - address: dfw-1.kokuei.dev:7777
+        link: https://dfw-1.kokuei.dev/instance/1
         timeout: 250ms
 
       - address: dfw-1.kokuei.dev:7797
+        link: https://dfw-1.kokuei.dev/instance/2
         timeout: 250ms
 
       - address: dfw-1.kokuei.dev:7817
+        link: https://dfw-1.kokuei.dev/instance/3
         timeout: 250ms
 
       - address: dfw-2.kokuei.dev:7777
+        link: https://dfw-2.kokuei.dev/instance/1
         timeout: 250ms
 
       - address: dfw-2.kokuei.dev:7797
+        link: https://dfw-2.kokuei.dev/instance/2
         timeout: 250ms
 
       - address: dfw-2.kokuei.dev:7817
+        link: https://dfw-2.kokuei.dev/instance/3
         timeout: 250ms
 
   - group: New Jersey
     interval: 15s
     servers:
       - address: nj-1.kokuei.dev:7777
+        link: https://nj-1.kokuei.dev/instance/1
         timeout: 250ms
 
       - address: nj-1.kokuei.dev:7797
+        link: https://nj-1.kokuei.dev/instance/2
         timeout: 250ms
 
       - address: nj-1.kokuei.dev:7817
+        link: https://nj-1.kokuei.dev/instance/3
         timeout: 250ms
 
       - address: nj-2.kokuei.dev:7777
+        link: https://nj-2.kokuei.dev/instance/1
         timeout: 250ms
 
       - address: nj-2.kokuei.dev:7797
+        link: https://nj-2.kokuei.dev/instance/2
         timeout: 250ms
 
       - address: nj-2.kokuei.dev:7817
+        link: https://nj-2.kokuei.dev/instance/3
+        timeout: 250ms
+
+  - group: New York
+    interval: 15s
+    servers:
+      - address: 66.150.121.88:7777
         timeout: 250ms
 
   - group: UK
     interval: 15s
     servers:
       - address: uk-1.kokuei.dev:7777
+        link: https://uk-1.kokuei.dev/instance/1
         timeout: 250ms
 
       - address: uk-1.kokuei.dev:7797
+        link: https://uk-1.kokuei.dev/instance/2
         timeout: 250ms
 
       - address: uk-1.kokuei.dev:7817
+        link: https://uk-1.kokuei.dev/instance/3
         timeout: 250ms
 
       - address: uk-2.kokuei.dev:7777
+        link: https://uk-2.kokuei.dev/instance/1
         timeout: 250ms
 
       - address: uk-2.kokuei.dev:7797
+        link: https://uk-2.kokuei.dev/instance/2
         timeout: 250ms
 
       - address: uk-2.kokuei.dev:7817
+        link: https://uk-2.kokuei.dev/instance/3
+        timeout: 250ms
+
+  - group: Frankfurt
+    interval: 15s
+    servers:
+      - address: 185.107.96.9:7777
         timeout: 250ms
