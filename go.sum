@@ -1,5 +1,6 @@
 github.com/aldehir/ut2u v0.1.5 h1:Fc65/ZxXkWtle7AFkgPLv/IPLLoQR6mR7/lwCR6S468=
 github.com/aldehir/ut2u v0.1.5/go.mod h1:JO7VKp8rZhpmg3OCCQIlnAIT7a1NVQPGIx52s9NM0qU=
+github.com/aldehir/ut2u v0.1.6 h1:4LOCbX65ZGKmPZWkznzTpRF7CU7xrpCSHkInRmEiYgg=
 github.com/aldehir/ut2u v0.1.6/go.mod h1:JO7VKp8rZhpmg3OCCQIlnAIT7a1NVQPGIx52s9NM0qU=
 github.com/aws/aws-sdk-go-v2 v1.21.0 h1:gMT0IW+03wtYJhRqTVYn0wLzwdnK9sRMcxmtfGzRdJc=
 github.com/aws/aws-sdk-go-v2 v1.21.0/go.mod h1:/RfNgGmRxI+iFOB1OeJUyxiU+9s88k3pfHvDagGEp0M=

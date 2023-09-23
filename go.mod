@@ -3,7 +3,12 @@ module github.com/aldehir/ut2-browser
 go 1.21.1
 
 require (
-	github.com/aldehir/ut2u v0.1.6 // indirect
+	github.com/aldehir/ut2u v0.1.6
+	github.com/spf13/cobra v1.7.0
+	gopkg.in/yaml.v3 v3.0.1
+)
+
+require (
 	github.com/aws/aws-sdk-go-v2 v1.21.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.13 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.18.38 // indirect
@@ -25,9 +30,7 @@ require (
 	github.com/aws/smithy-go v1.14.2 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
