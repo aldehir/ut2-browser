@@ -12,6 +12,7 @@ export interface Server {
   address: string
   external_link?: string
   online: boolean
+  map: string
   player_count: PlayerCount
   players: Player[]
 }

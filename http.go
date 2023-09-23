@@ -29,6 +29,7 @@ type serverJSON struct {
 	Address      string          `json:"address"`
 	ExternalLink string          `json:"external_link"`
 	Online       bool            `json:"online"`
+	Map          string          `json:"map"`
 	PlayerCount  playerCountJSON `json:"player_count"`
 	Players      []playerJSON    `json:"players"`
 }
@@ -92,6 +93,7 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 
 			if svr.Online && svr.Details != nil {
 				jsonObj.Name = svr.Details.Info.ServerName.String()
+				jsonObj.Map = svr.Details.Info.MapName.String()
 				jsonObj.PlayerCount = playerCountJSON{
 					Current: int(svr.Details.Info.CurrentPlayers),
 					Max:     int(svr.Details.Info.MaxPlayers),

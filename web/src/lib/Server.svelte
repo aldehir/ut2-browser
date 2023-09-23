@@ -1,15 +1,15 @@
 <script lang="ts">
   import type { Server, Player } from "../types.d"
 
-  import copy from "../assets/copy.svg"
+  import play from "../assets/play-circle.svg"
   import external_link from "../assets/external-link.svg"
   import eye from "../assets/eye.svg"
 
   export let server: Server
 
-  function truncateName(s: string) {
-    if (s.length > 30) {
-      return s.slice(0, 30) + "..."
+  function truncateName(s: string, len: number) {
+    if (s.length > len) {
+      return s.slice(0, len) + "..."
     }
     return s
   }
@@ -27,7 +27,7 @@
   }
 
   let serverNameShort: string
-  $: serverNameShort = truncateName(server.name)
+  $: serverNameShort = truncateName(server.name, 30)
 
   let isEmpty: boolean
   $: isEmpty = server.players == null || server.players.length == 0
@@ -46,6 +46,7 @@
   <div class="header">
     <div class="title">
       <h2>{serverNameShort}</h2>
+      <span>{server.map}</span>
     </div>
     <div class="status">
       {#if server.online}
@@ -64,9 +65,9 @@
     </div>
     {#each server.players as player}
     <div class="row">
-      <div class="col col-name">{player.name}</div>
+      <div class="col col-name">{truncateName(player.name,30)}</div>
       <div class="col col-score">{player.score}</div>
-      <div class="col col-ping">{player.ping}ms</div>
+      <div class="col col-ping">{player.ping}</div>
     </div>
     {/each}
   </div>
@@ -78,6 +79,8 @@
       {server.address}
     </div>
     <div class="links">
+      <a href="ut2004://{server.address}" title="Join"><img src="{play}" alt="Join"></a>
+      <a href="ut2004://{server.address}?SpectatorOnly=1" title="Spectate"><img src="{eye}" alt="Spectate"></a>
       {#if server.external_link}
         <a target="_blank" href="{server.external_link}" title="External Link"><img src="{external_link}" alt="Admin"></a>
       {/if}
@@ -95,13 +98,6 @@
 
   display: flex;
   flex-flow: column nowrap;
-
-  h2 {
-    font: 400 0.875em var(--font-primary);
-    color: var(--color-primary-200);
-    padding: 0;
-    margin: 0;
-  }
 }
 
 .offline {
@@ -116,7 +112,21 @@
   padding: 1rem;
 
   .title {
+    display: flex;
+    flex-flow: column nowrap;
     flex-grow: 1.0;
+
+    h2 {
+      font: 400 0.875em var(--font-primary);
+      color: var(--color-primary-200);
+      padding: 0;
+      margin: 0;
+    }
+
+    span {
+      font: 400 0.75em var(--font-secondary);
+      color: var(--color-primary-400);
+    }
   }
 
   .status {
@@ -135,7 +145,7 @@
   justify-content: space-between;
 
   font: 400 0.8rem var(--font-primary);
-  color: var(--color-primary-400);
+  color: var(--color-primary-300);
 
   .links {
     display: flex;
@@ -144,7 +154,13 @@
 
     img {
       width: 16px;
-      filter: invert(100%) sepia(33%) saturate(730%) hue-rotate(174deg) brightness(86%) contrast(87%);
+      filter: invert(100%) sepia(33%) saturate(730%) hue-rotate(174deg) brightness(65%) contrast(87%);
+    }
+
+    a:hover, a:active {
+      img {
+        filter: invert(100%) sepia(33%) saturate(730%) hue-rotate(174deg) brightness(86%) contrast(87%);
+      }
     }
   }
 }
@@ -177,16 +193,16 @@
     }
 
     .col-name {
-      width: 70%;
+      width: 60%;
     }
 
     .col-score {
-      width: 15%;
+      width: 20%;
       text-align: right;
     }
 
     .col-ping {
-      width: 15%;
+      width: 20%;
       text-align: right;
     }
   }
