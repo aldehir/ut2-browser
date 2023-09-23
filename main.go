@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"io/fs"
 	"log/slog"
 	"net/http"
@@ -27,6 +28,9 @@ var engine *QueryEngine
 
 var logger *slog.Logger
 
+//go:embed web/dist
+var embeddedFrontend embed.FS
+
 func init() {
 	cmd.Flags().StringVarP(&configFile, "config", "c", "config.yml", "config file")
 	cmd.Flags().StringVar(&httpAddr, "http", ":8200", "http listen address")
@@ -41,7 +45,7 @@ func main() {
 
 func preRun(cmd *cobra.Command, args []string) error {
 	handler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
-		Level: slog.LevelDebug,
+		Level: slog.LevelInfo,
 	})
 
 	logger = slog.New(handler)
@@ -65,7 +69,10 @@ func runServer(cmd *cobra.Command, args []string) error {
 	addStaticServers()
 
 	var webFS fs.FS
-	webFS = os.DirFS(httpRoot)
+	webFS, _ = fs.Sub(embeddedFrontend, "web/dist")
+	if httpRoot != "" {
+		webFS = os.DirFS(httpRoot)
+	}
 
 	webServer := NewBrowserServer(webFS)
 	webServer.Addr = httpAddr

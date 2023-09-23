@@ -115,7 +115,7 @@ func (m *QueryEngine) randomize(t time.Duration) time.Duration {
 func (m *QueryEngine) performQuery(r Registration, state ServerState) {
 	addr, err := net.ResolveUDPAddr("udp", r.Address)
 	if err != nil {
-		logger.Debug("failed to resolve address", "addr", r.Address, "err", err)
+		logger.Error("failed to resolve address", "addr", r.Address, "err", err)
 		return
 	}
 
@@ -134,7 +134,7 @@ func (m *QueryEngine) performQuery(r Registration, state ServerState) {
 
 	if err != nil {
 		offline = true
-		logger.Info("failed to query server", "addr", r.Address, "err", err)
+		logger.Error("failed to query server", "addr", r.Address, "err", err)
 
 		// If not persisting and we reach max failures, remove registration
 		if !r.Persist && state.Failures+1 >= m.MaxFailures {
@@ -142,7 +142,7 @@ func (m *QueryEngine) performQuery(r Registration, state ServerState) {
 			m.State.Remove(r.ID)
 		}
 	} else {
-		logger.Info("query success", "addr", r.Address, "servername", details.Info.ServerName, "mapname", details.Info.MapName)
+		logger.Debug("query success", "addr", r.Address, "servername", details.Info.ServerName, "mapname", details.Info.MapName)
 	}
 
 	m.State.Update(r.ID, ServerStateUpdate{
