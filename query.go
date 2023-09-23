@@ -109,7 +109,7 @@ func (m *QueryEngine) Run() error {
 // randomize adds a random factor to given time duration to prevent all queries
 // from happening at the same time
 func (m *QueryEngine) randomize(t time.Duration) time.Duration {
-	return t + (time.Duration(rand.Intn(10000)) * time.Millisecond)
+	return t + (time.Duration(rand.Intn(2000)) * time.Millisecond)
 }
 
 func (m *QueryEngine) performQuery(r Registration, state ServerState) {
