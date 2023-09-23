@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/fs"
 	"log/slog"
 	"net/http"
 	"os"
@@ -17,6 +18,7 @@ var cmd = &cobra.Command{
 
 var configFile string
 var httpAddr string
+var httpRoot string
 
 var config Config
 var registry *Registry
@@ -28,6 +30,7 @@ var logger *slog.Logger
 func init() {
 	cmd.Flags().StringVarP(&configFile, "config", "c", "config.yml", "config file")
 	cmd.Flags().StringVar(&httpAddr, "http", ":8200", "http listen address")
+	cmd.Flags().StringVar(&httpRoot, "root", "", "http root directory, use embedded if empty")
 }
 
 func main() {
@@ -61,7 +64,10 @@ func preRun(cmd *cobra.Command, args []string) error {
 func runServer(cmd *cobra.Command, args []string) error {
 	addStaticServers()
 
-	webServer := NewBrowserServer()
+	var webFS fs.FS
+	webFS = os.DirFS(httpRoot)
+
+	webServer := NewBrowserServer(webFS)
 	webServer.Addr = httpAddr
 
 	go func() {
@@ -90,7 +96,14 @@ func loadConfig() error {
 func addStaticServers() {
 	for _, static := range config.Static {
 		for _, server := range static.Servers {
-			registry.Register(server.Address, static.Group, static.Interval, server.Timeout, true)
+			registry.Register(Registration{
+				Address:      server.Address,
+				Group:        static.Group,
+				Interval:     static.Interval,
+				Timeout:      server.Timeout,
+				Persist:      true,
+				ExternalLink: server.ExternalLink,
+			})
 		}
 	}
 }

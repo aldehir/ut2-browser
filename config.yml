@@ -6,28 +6,28 @@ static:
       - address: 74.91.119.9:7777
         timeout: 250ms
 
-      - address: 192.223.26.77:7777
-        timeout: 250ms
-
-      - address: 104.238.165.51:7777
-        timeout: 250ms
-
       - address: chi-1.kokuei.dev:7777
+        link: https://chi-1.kokuei.dev/instance/1
         timeout: 250ms
 
       - address: chi-1.kokuei.dev:7797
+        link: https://chi-1.kokuei.dev/instance/2
         timeout: 250ms
 
       - address: chi-1.kokuei.dev:7817
+        link: https://chi-1.kokuei.dev/instance/3
         timeout: 250ms
 
       - address: chi-2.kokuei.dev:7777
+        link: https://chi-2.kokuei.dev/instance/1
         timeout: 250ms
 
       - address: chi-2.kokuei.dev:7797
+        link: https://chi-2.kokuei.dev/instance/2
         timeout: 250ms
 
       - address: chi-2.kokuei.dev:7817
+        link: https://chi-2.kokuei.dev/instance/3
         timeout: 250ms
 
   - group: Dallas

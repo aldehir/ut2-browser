@@ -14,8 +14,9 @@ type StaticConfig struct {
 }
 
 type ServerConfig struct {
-	Address string        `yaml:"address"`
-	Timeout time.Duration `yaml:"timeout"`
+	Address      string        `yaml:"address"`
+	Timeout      time.Duration `yaml:"timeout"`
+	ExternalLink string        `yaml:"link"`
 }
 
 type DynamicConfig struct {

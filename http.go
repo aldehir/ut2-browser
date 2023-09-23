@@ -2,13 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"io/fs"
 	"net/http"
 	"sort"
 )
 
-func NewBrowserServer() *http.Server {
+func NewBrowserServer(root fs.FS) *http.Server {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/v1/servers", HandleServerQuery)
+	mux.Handle("/", http.FileServer(http.FS(root)))
 
 	server := &http.Server{
 		Handler: mux,
@@ -46,7 +48,7 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 	servers := state.Servers()
 
 	// Organize servers by group
-	byGroup := make(map[string][]*ServerState)
+	byGroup := make(map[string][]ServerState)
 	for _, svr := range servers {
 		// Ignore offline servers for now
 		if !svr.Online {
@@ -55,10 +57,10 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 
 		list, exists := byGroup[svr.Registration.Group]
 		if !exists {
-			list = make([]*ServerState, 0, 10)
+			list = make([]ServerState, 0, 10)
 		}
 
-		list = append(list, &svr)
+		list = append(list, svr)
 		byGroup[svr.Registration.Group] = list
 	}
 
@@ -69,10 +71,14 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 			Servers: make([]serverJSON, 0, len(servers)),
 		}
 
-		// Sort servers
+		// Sort servers by fill % and then by name
 		sort.Slice(servers, func(i, j int) bool {
 			// Put filled servers at start
-			return servers[i].Filled() > servers[j].Filled()
+			if servers[i].Filled() > servers[j].Filled() {
+				return true
+			}
+
+			return servers[i].Details.Info.ServerName.String() < servers[j].Details.Info.ServerName.String()
 		})
 
 		for _, svr := range servers {
@@ -99,9 +105,13 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 					})
 				}
 
-				// Sort players by score
+				// Sort players by score, then by name
 				sort.Slice(jsonObj.Players, func(i, j int) bool {
-					return jsonObj.Players[i].Score > jsonObj.Players[j].Score
+					if jsonObj.Players[i].Score > jsonObj.Players[j].Score {
+						return true
+					}
+
+					return jsonObj.Players[i].Name < jsonObj.Players[j].Name
 				})
 			}
 
@@ -121,6 +131,8 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 	}
 
 	doc.Groups = groups
+
+	w.Header().Add("Content-Type", "text/json")
 
 	encoder := json.NewEncoder(w)
 	err := encoder.Encode(doc)
