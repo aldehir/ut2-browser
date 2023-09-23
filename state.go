@@ -18,13 +18,25 @@ type State struct {
 }
 
 type ServerState struct {
-	Address  string
-	Online   bool
-	Failures int
-	Details  *query.ServerDetails
+	Registration Registration
+	Online       bool
+	Failures     int
+	Details      *query.ServerDetails
 
 	Created time.Time
 	Updated time.Time
+}
+
+func (s ServerState) Filled() float64 {
+	if s.Details == nil {
+		return 0
+	}
+
+	if s.Details.Info.MaxPlayers == 0 {
+		return 0
+	}
+
+	return float64(s.Details.Info.CurrentPlayers) / float64(s.Details.Info.MaxPlayers)
 }
 
 type ServerStateUpdate struct {
@@ -65,22 +77,22 @@ func (s *State) Get(id int) (ServerState, bool) {
 	return ServerState{}, false
 }
 
-func (s *State) GetOrAdd(id int, address string) ServerState {
+func (s *State) GetOrAdd(reg Registration) ServerState {
 	s.serversMutex.Lock()
 	defer s.serversMutex.Unlock()
 
-	if state, exists := s.servers[id]; exists {
+	if state, exists := s.servers[reg.ID]; exists {
 		return *state
 	}
 
 	t := time.Now()
 
 	state := &ServerState{
-		Address: address,
-		Created: t,
+		Registration: reg,
+		Created:      t,
 	}
 
-	s.servers[id] = state
+	s.servers[reg.ID] = state
 	return *state
 }
 

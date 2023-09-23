@@ -12,6 +12,7 @@ type Registration struct {
 	Interval time.Duration
 	Timeout  time.Duration
 	Persist  bool
+	ExternalLink string
 }
 
 type Registry struct {

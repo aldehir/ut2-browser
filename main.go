@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log/slog"
+	"net/http"
 	"os"
-	"time"
 
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
@@ -17,6 +16,7 @@ var cmd = &cobra.Command{
 }
 
 var configFile string
+var httpAddr string
 
 var config Config
 var registry *Registry
@@ -27,6 +27,7 @@ var logger *slog.Logger
 
 func init() {
 	cmd.Flags().StringVarP(&configFile, "config", "c", "config.yml", "config file")
+	cmd.Flags().StringVar(&httpAddr, "http", ":8200", "http listen address")
 }
 
 func main() {
@@ -59,6 +60,15 @@ func preRun(cmd *cobra.Command, args []string) error {
 
 func runServer(cmd *cobra.Command, args []string) error {
 	addStaticServers()
+
+	webServer := NewBrowserServer()
+	webServer.Addr = httpAddr
+
+	go func() {
+		if err := webServer.ListenAndServe(); err != http.ErrServerClosed {
+			logger.Error("http server error", "err", err)
+		}
+	}()
 
 	if err := engine.Run(); err != ErrStopped {
 		return err

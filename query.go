@@ -83,7 +83,7 @@ func (m *QueryEngine) Run() error {
 			// Find servers that are ready for query
 			regs := m.Registry.Registrations()
 			for _, r := range regs {
-				state := m.State.GetOrAdd(r.ID, r.Address)
+				state := m.State.GetOrAdd(r)
 
 				if time.Since(state.Updated) >= m.randomize(r.Interval) && !m.isPending(r.ID) {
 					m.markPending(r.ID)
