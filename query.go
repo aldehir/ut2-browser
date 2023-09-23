@@ -116,6 +116,7 @@ func (m *QueryEngine) performQuery(r Registration, state ServerState) {
 	addr, err := net.ResolveUDPAddr("udp", r.Address)
 	if err != nil {
 		logger.Error("failed to resolve address", "addr", r.Address, "err", err)
+		m.State.Update(r.ID, ServerStateUpdate{Online: false})
 		return
 	}
 
