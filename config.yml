@@ -152,3 +152,15 @@ static:
     servers:
       - address: 185.107.96.9:7777
         timeout: 250ms
+
+      - address: de-1.kokuei.dev:7777
+        link: https://de-1.kokuei.dev/instance/1
+        timeout: 250ms
+
+      - address: de-1.kokuei.dev:7797
+        link: https://de-1.kokuei.dev/instance/2
+        timeout: 250ms
+
+      - address: de-1.kokuei.dev:7817
+        link: https://de-1.kokuei.dev/instance/3
+        timeout: 250ms
