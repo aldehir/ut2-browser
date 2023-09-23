@@ -10,7 +10,7 @@ import (
 )
 
 type State struct {
-	Servers      map[int]*ServerState
+	servers      map[int]*ServerState
 	serversMutex sync.RWMutex
 
 	MaxPendingRemovals int
@@ -36,16 +36,29 @@ var ErrInvalidID = errors.New("invalid id")
 
 func NewState() *State {
 	return &State{
-		Servers:            make(map[int]*ServerState),
+		servers:            make(map[int]*ServerState),
 		MaxPendingRemovals: 100,
 	}
+}
+
+func (s *State) Servers() []ServerState {
+	s.serversMutex.RLock()
+	defer s.serversMutex.RUnlock()
+
+	servers := make([]ServerState, 0, len(s.servers))
+
+	for _, server := range s.servers {
+		servers = append(servers, *server)
+	}
+
+	return servers
 }
 
 func (s *State) Get(id int) (ServerState, bool) {
 	s.serversMutex.RLock()
 	defer s.serversMutex.RUnlock()
 
-	if state, exists := s.Servers[id]; exists {
+	if state, exists := s.servers[id]; exists {
 		return *state, true
 	}
 
@@ -56,7 +69,7 @@ func (s *State) GetOrAdd(id int, address string) ServerState {
 	s.serversMutex.Lock()
 	defer s.serversMutex.Unlock()
 
-	if state, exists := s.Servers[id]; exists {
+	if state, exists := s.servers[id]; exists {
 		return *state
 	}
 
@@ -67,7 +80,7 @@ func (s *State) GetOrAdd(id int, address string) ServerState {
 		Created: t,
 	}
 
-	s.Servers[id] = state
+	s.servers[id] = state
 	return *state
 }
 
@@ -75,7 +88,7 @@ func (s *State) Update(id int, update ServerStateUpdate) error {
 	s.serversMutex.Lock()
 	defer s.serversMutex.Unlock()
 
-	state, exists := s.Servers[id]
+	state, exists := s.servers[id]
 	if !exists {
 		return fmt.Errorf("%w: %d", ErrInvalidID, id)
 	}
@@ -97,12 +110,12 @@ func (s *State) Remove(id int) {
 	s.serversMutex.Lock()
 	defer s.serversMutex.Unlock()
 
-	_, exists := s.Servers[id]
+	_, exists := s.servers[id]
 	if !exists {
 		return
 	}
 
-	delete(s.Servers, id)
+	delete(s.servers, id)
 	s.removals++
 
 	if s.removals >= s.MaxPendingRemovals {
@@ -115,10 +128,10 @@ func (s *State) gc() {
 
 	// Go maps are never sized down, so after several removals we create a new
 	// map and clean up the old
-	old := s.Servers
-	s.Servers = make(map[int]*ServerState, len(old))
+	old := s.servers
+	s.servers = make(map[int]*ServerState, len(old))
 	for k, v := range old {
-		s.Servers[k] = v
+		s.servers[k] = v
 	}
 
 	clear(old)

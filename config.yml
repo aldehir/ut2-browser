@@ -12,6 +12,83 @@ static:
       - address: 104.238.165.51:7777
         timeout: 250ms
 
-dynamic:
-  tokens:
-    - asldkgjasdflkjglkajsdflkjaglakjsf
+      - address: chi-1.kokuei.dev:7777
+        timeout: 250ms
+
+      - address: chi-1.kokuei.dev:7797
+        timeout: 250ms
+
+      - address: chi-1.kokuei.dev:7817
+        timeout: 250ms
+
+      - address: chi-2.kokuei.dev:7777
+        timeout: 250ms
+
+      - address: chi-2.kokuei.dev:7797
+        timeout: 250ms
+
+      - address: chi-2.kokuei.dev:7817
+        timeout: 250ms
+
+  - group: Dallas
+    interval: 15s
+    servers:
+      - address: dfw-1.kokuei.dev:7777
+        timeout: 250ms
+
+      - address: dfw-1.kokuei.dev:7797
+        timeout: 250ms
+
+      - address: dfw-1.kokuei.dev:7817
+        timeout: 250ms
+
+      - address: dfw-2.kokuei.dev:7777
+        timeout: 250ms
+
+      - address: dfw-2.kokuei.dev:7797
+        timeout: 250ms
+
+      - address: dfw-2.kokuei.dev:7817
+        timeout: 250ms
+
+  - group: New Jersey
+    interval: 15s
+    servers:
+      - address: nj-1.kokuei.dev:7777
+        timeout: 250ms
+
+      - address: nj-1.kokuei.dev:7797
+        timeout: 250ms
+
+      - address: nj-1.kokuei.dev:7817
+        timeout: 250ms
+
+      - address: nj-2.kokuei.dev:7777
+        timeout: 250ms
+
+      - address: nj-2.kokuei.dev:7797
+        timeout: 250ms
+
+      - address: nj-2.kokuei.dev:7817
+        timeout: 250ms
+
+  - group: UK
+    interval: 15s
+    servers:
+      - address: uk-1.kokuei.dev:7777
+        timeout: 250ms
+
+      - address: uk-1.kokuei.dev:7797
+        timeout: 250ms
+
+      - address: uk-1.kokuei.dev:7817
+        timeout: 250ms
+
+      - address: uk-2.kokuei.dev:7777
+        timeout: 250ms
+
+      - address: uk-2.kokuei.dev:7797
+        timeout: 250ms
+
+      - address: uk-2.kokuei.dev:7817
+        timeout: 250ms

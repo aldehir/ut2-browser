@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"math/rand"
 	"net"
 	"sync"
 	"time"
@@ -84,7 +85,7 @@ func (m *QueryEngine) Run() error {
 			for _, r := range regs {
 				state := m.State.GetOrAdd(r.ID, r.Address)
 
-				if time.Since(state.Updated) >= r.Interval && !m.isPending(r.ID) {
+				if time.Since(state.Updated) >= m.randomize(r.Interval) && !m.isPending(r.ID) {
 					m.markPending(r.ID)
 
 					go func(r Registration, state ServerState) {
@@ -103,6 +104,12 @@ func (m *QueryEngine) Run() error {
 	close(m.stop)
 
 	return runErr
+}
+
+// randomize adds a random factor to given time duration to prevent all queries
+// from happening at the same time
+func (m *QueryEngine) randomize(t time.Duration) time.Duration {
+	return t + (time.Duration(rand.Intn(10000)) * time.Millisecond)
 }
 
 func (m *QueryEngine) performQuery(r Registration, state ServerState) {
