@@ -67,23 +67,13 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 	}
 
 	groups := make([]groupJSON, 0, len(byGroup))
-	for name, servers := range byGroup {
+	for name, groupServers := range byGroup {
 		group := groupJSON{
 			Name:    name,
-			Servers: make([]serverJSON, 0, len(servers)),
+			Servers: make([]serverJSON, 0, len(groupServers)),
 		}
 
-		// Sort servers by fill % and then by name
-		sort.Slice(servers, func(i, j int) bool {
-			// Put filled servers at start
-			if servers[i].Filled() > servers[j].Filled() {
-				return true
-			}
-
-			return servers[i].Details.Info.ServerName.String() < servers[j].Details.Info.ServerName.String()
-		})
-
-		for _, svr := range servers {
+		for _, svr := range groupServers {
 			var jsonObj serverJSON
 
 			// Fallback values
@@ -110,17 +100,30 @@ func HandleServerQuery(w http.ResponseWriter, r *http.Request) {
 				}
 
 				// Sort players by score, then by name
-				sort.Slice(jsonObj.Players, func(i, j int) bool {
-					if jsonObj.Players[i].Score > jsonObj.Players[j].Score {
+				sort.SliceStable(jsonObj.Players, func(i, j int) bool {
+					left := jsonObj.Players[i].Score
+					right := jsonObj.Players[j].Score
+
+					if left > right {
 						return true
+					} else if left == right {
+						return jsonObj.Players[i].Name < jsonObj.Players[j].Name
 					}
 
-					return jsonObj.Players[i].Name < jsonObj.Players[j].Name
+					return false
 				})
 			}
 
 			group.Servers = append(group.Servers, jsonObj)
 		}
+
+		sort.SliceStable(group.Servers, func(i, j int) bool {
+			return group.Servers[i].Name < group.Servers[j].Name
+		})
+
+		sort.SliceStable(group.Servers, func(i, j int) bool {
+			return len(group.Servers[i].Players) > len(group.Servers[j].Players)
+		})
 
 		groups = append(groups, group)
 	}

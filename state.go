@@ -40,6 +40,18 @@ func (s ServerState) Filled() float64 {
 	return float64(s.Details.Info.CurrentPlayers) / float64(s.Details.Info.MaxPlayers)
 }
 
+func (s ServerState) PlayerSlotsLeft() int {
+	if s.Details == nil {
+		return 1000
+	}
+
+	if s.Details.Info.MaxPlayers == 0 {
+		return 1000
+	}
+
+	return int(s.Details.Info.MaxPlayers) - int(s.Details.Info.CurrentPlayers)
+}
+
 type ServerStateUpdate struct {
 	ResolvedAddress string
 	Online          bool

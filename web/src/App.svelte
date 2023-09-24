@@ -14,7 +14,7 @@
 
   async function performLoad() {
     data = await load()
-    setTimeout(performLoad, 15*1000)
+    setTimeout(performLoad, 5*1000)
     return data
   }
 </script>
